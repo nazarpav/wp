@@ -1,0 +1,36 @@
+yum update
+service iptables stop && chkconfig iptables off
+yum -y install httpd
+chkconfig httpd on
+service httpd start
+yum -y install php php-common php-gd php-mysql php-xml php-mbstring
+yum install epel-release
+wget http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+sudo rpm -Uvh remi-release-7*.rpm
+yum update --enablerepo=remi-php70
+service httpd restart
+yum -y install mysql mysql-server
+chkconfig mysqld on
+service mysqld start
+yum install mariadb-server
+systemctl start mariadb
+mysql_secure_installation
+yum -y install wget
+mysql -u root -p -e "CREATE DATABASE testmDB;CREATE USER nazar@localhost IDENTIFIED BY '12341234';GRANT ALL PRIVILEGES ON testmDB.* TO nazar@localhost IDENTIFIED BY '12341234';FLUSH PRIVILEGES;"
+yum install php-gd
+service httpd restart
+wget http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+sudo rpm -Uvh remi-release-7*.rpm
+yum update --enablerepo=remi-php70
+service httpd restart
+cd /var/www/html/
+wget http://wordpress.org/latest.tar.gz
+tar xzvf latest.tar.gz
+cd /var/www/html/
+rm /var/www/html/latest.tar.gz
+cp -r /var/www/html/wordpress/* /var/www/html/
+rm -rf /var/www/html/wordpress
+mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
+vim /var/www/html/wp-config.php
+iptables -F
+systemctl restart httpd
